@@ -1,0 +1,384 @@
+<!DOCTYPE html><html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DRPHONE.COM</title>
+  <meta name="theme-color" content="#bfe8b8" />
+  <style>
+    :root{
+      --beige:#F5F5DC;          /* page background */
+      --mint:#C8E6C9;           /* header + buttons (light green) */
+      --mint-strong:#8BC34A;    /* hover/active accent */
+      --ink:#1b1b1b;            /* primary text */
+      --muted:#666;             /* secondary text */
+      --card:#fff;              /* cards */
+      --ring:rgba(0,0,0,.08);   /* borders/shadows */
+      --good:#2e7d32;           /* success */
+      --warn:#e65100;           /* warning */
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,"Noto Sans",Arial,"Apple Color Emoji","Segoe UI Emoji";
+      color:var(--ink); background:var(--beige);
+      display:flex; flex-direction:column; min-height:100vh; overflow-x:hidden;
+    }
+    header{
+      position:sticky; top:0; z-index:10;
+      background:var(--mint);
+      border-bottom:1px solid var(--ring);
+      box-shadow:0 6px 24px rgba(0,0,0,.06);
+    }
+    .wrap{max-width:1100px; margin-inline:auto; padding:14px 18px}
+    .brand{display:flex; align-items:center; gap:12px}
+    .logo{
+      width:42px; height:42px; border-radius:14px; background:linear-gradient(145deg,#d6efd7,#9ad29a);
+      display:grid; place-items:center; font-weight:900; color:#114311; letter-spacing:.5px;
+      box-shadow:0 8px 20px rgba(0,0,0,.12), inset 0 2px 6px rgba(255,255,255,.55);
+      user-select:none
+    }
+    h1{margin:0; font-size:clamp(18px,3vw,22px); font-weight:800}
+    .sub{color:#0d3b0d; font-size:12px}.topbar{display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap}
+.clock{font-variant-numeric:tabular-nums; background:#e9f6ea; padding:8px 12px; border-radius:12px; border:1px solid var(--ring)}
+.mode{display:flex; gap:8px; align-items:center}
+
+main{flex:1;}
+.grid{display:grid; grid-template-columns:1.1fr .9fr; gap:20px; padding:22px 18px}
+@media (max-width: 980px){ .grid{grid-template-columns:1fr;}}
+
+.card{
+  background:var(--card); border:1px solid var(--ring); border-radius:18px; padding:18px; box-shadow:0 10px 30px rgba(0,0,0,.06);
+  position:relative; overflow:hidden
+}
+.card::after{content:""; position:absolute; inset:-50% -30% auto auto; width:220px; height:220px; border-radius:50%; background:radial-gradient(closest-side, rgba(139,195,74,.18), transparent 70%); transform:translate(30px,-60px)}
+
+.title{font-size:clamp(16px,2.2vw,20px); font-weight:800; margin:0 0 10px}
+.muted{color:var(--muted); font-size:13px; line-height:1.4}
+
+label{font-size:13px; color:#0f3f0f; font-weight:600}
+textarea,input[type="text"],input[type="file"]{
+  width:100%; border:1px solid var(--ring); background:#fff; border-radius:14px; padding:12px 12px; font:inherit; resize:vertical;
+  box-shadow:inset 0 1px 0 rgba(0,0,0,.03)
+}
+textarea{min-height:120px}
+
+.row{display:flex; gap:10px; align-items:center; flex-wrap:wrap}
+.btn{
+  --bg: var(--mint);
+  appearance:none; border:none; background:var(--bg); color:#0d3b0d; font-weight:800; padding:10px 16px; border-radius:14px; cursor:pointer;
+  transition:transform .12s ease, filter .2s ease, box-shadow .2s ease; box-shadow:0 8px 18px rgba(53,118,28,.15)
+}
+.btn:hover{transform:translateY(-1px)}
+.btn:active{transform:translateY(0)}
+.btn.primary{--bg:linear-gradient(180deg,#d1efcf,#a2dfa1)}
+.btn.ghost{background:transparent; border:1px dashed #9ccc65; color:#1a531a}
+
+.toast{position:fixed; right:14px; bottom:14px; background:#ffffff; border:1px solid var(--ring); padding:12px 14px; border-radius:14px; box-shadow:0 12px 34px rgba(0,0,0,.16); display:none}
+
+.timeline{display:grid; gap:10px; margin-top:10px}
+.step{display:flex; gap:10px; align-items:flex-start}
+.bullet{width:10px; height:10px; border-radius:50%; background:#9ccc65; margin-top:6px}
+.step .head{font-weight:700}
+
+.tag{display:inline-flex; align-items:center; gap:6px; padding:6px 10px; border-radius:999px; border:1px solid var(--ring); background:#f8fff8; font-size:12px}
+
+.list{display:grid; gap:10px; max-height:420px; overflow:auto; padding-right:4px}
+.item{border:1px solid var(--ring); border-radius:14px; padding:12px; background:#fcfffc}
+.item .meta{font-size:12px; color:var(--muted); display:flex; gap:10px; flex-wrap:wrap}
+.item textarea{min-height:70px}
+
+.rtl{direction:rtl}
+.fade-in{animation:fade .5s ease both}
+@keyframes fade{from{opacity:0; transform:translateY(4px)}to{opacity:1; transform:none}}
+
+footer{padding:18px; text-align:center; color:var(--muted); font-size:12px}
+
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap topbar">
+      <div class="brand">
+        <div class="logo" aria-hidden>DR</div>
+        <div>
+          <h1>DRPHONE.COM</h1>
+          <div class="sub">Small helper to define your problem • مساعد صغير يعرّف مشكلتك</div>
+        </div>
+      </div>
+      <div class="mode">
+        <span id="clock" class="clock" aria-live="polite">--:--:--</span>
+        <button id="devBtn" class="btn ghost" title="Developer Console">🔐 Developer</button>
+      </div>
+    </div>
+  </header>  <main>
+    <div class="grid wrap">
+      <!-- User Card -->
+      <section class="card fade-in" id="userCard">
+        <h2 class="title">Describe your fatigue symptoms • اكتب أعراض تعبك</h2>
+        <p class="muted">English or Arabic is fine. اكتب بالإنجليزي أو العربي. After you submit, we'll notify you once a developer suggests what the problem might be. سيتم إشعارك بعد مراجعة المطوّر.</p><div style="height:10px"></div>
+    <label for="symptoms">Symptoms • الأعراض</label>
+    <textarea id="symptoms" placeholder="e.g., headache, dizziness, tired in the morning • مثال: صداع، دوخة، تعب الصبح"></textarea>
+
+    <div style="height:10px"></div>
+    <div class="row">
+      <label class="tag" for="logo">
+        <span>Optional logo/image • (اختياري) لوجو/صورة</span>
+      </label>
+      <input type="file" id="logo" accept="image/*" />
+    </div>
+
+    <div style="height:14px"></div>
+    <div class="row">
+      <button id="sendBtn" class="btn primary">📨 Send to DRPHONE • إرسال</button>
+      <button id="clearBtn" class="btn ghost" title="Clear">Reset</button>
+    </div>
+
+    <div id="ticketArea" class="timeline" aria-live="polite" style="display:none"></div>
+  </section>
+
+  <!-- Developer Card -->
+  <aside class="card fade-in" id="devCard" hidden>
+    <h2 class="title">Developer Console • لوحة المطوّر</h2>
+    <p class="muted">Incoming symptom reports appear below. Write what the disease/problem might be, then send to notify the user. تأتي البلاغات هنا. اكتب الاحتمال وأرسل لإشعار المستخدم.</p>
+    <div class="row" style="margin-top:8px">
+      <span class="tag">Status: <strong id="devStatus" style="margin-left:6px">Locked</strong></span>
+      <button id="lockBtn" class="btn">🔓 Unlock</button>
+    </div>
+    <div style="height:12px"></div>
+    <div id="queue" class="list" aria-live="polite"></div>
+  </aside>
+</div>
+
+  </main>  <div id="toast" class="toast" role="status"></div>  <footer>
+    © <span id="year"></span> DRPHONE.COM • Background: Beige • Buttons/Header: Light Green
+  </footer>  <script>
+    // --- Utilities ---
+    const $ = (sel, root=document) => root.querySelector(sel);
+    const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
+
+    const store = {
+      get(k, d){ try{ return JSON.parse(localStorage.getItem(k)) ?? d }catch{ return d }},
+      set(k, v){ localStorage.setItem(k, JSON.stringify(v)); },
+    };
+
+    const uuid = () => (crypto.randomUUID ? crypto.randomUUID() : 'xxxxxxx-xxxx-4xxx-yxxx-xxxxxxxx'.replace(/[xy]/g, c=>{
+      const r = Math.random()*16|0, v = c=='x'?r:(r&0x3|0x8); return v.toString(16)
+    }));
+
+    const nowISO = () => new Date().toISOString();
+    const fmt = (iso) => new Date(iso).toLocaleString(undefined, {hour12:false});
+
+    const AR_RE = /[\u0600-\u06FF]/; // quick heuristic for Arabic
+
+    // --- Clock ---
+    const clockEl = $('#clock');
+    const tick = ()=>{ const d=new Date(); clockEl.textContent = d.toLocaleTimeString(undefined, {hour12:false}); };
+    setInterval(tick,1000); tick();
+    $('#year').textContent = String(new Date().getFullYear());
+
+    // --- Notification helpers ---
+    async function ensureNotifyPermission(){
+      if(!('Notification' in window)) return false;
+      if(Notification.permission === 'granted') return true;
+      if(Notification.permission !== 'denied'){
+        try{ const p = await Notification.requestPermission(); return p==='granted'; }catch{ return false }
+      }
+      return false;
+    }
+    function notify(title, body){
+      if(!('Notification' in window)) return fallbackToast(body || title);
+      try{
+        new Notification(title, { body, icon: undefined });
+      }catch{
+        fallbackToast(title + (body? (' — '+body):''));
+      }
+    }
+    function fallbackToast(msg){ const t=$('#toast'); t.textContent = msg; t.style.display='block'; clearTimeout(t._h); t._h=setTimeout(()=>t.style.display='none', 4200); }
+
+    // --- App State ---
+    const USER_ID_KEY = 'drphone_userid';
+    let USER_ID = store.get(USER_ID_KEY);
+    if(!USER_ID){ USER_ID = uuid(); store.set(USER_ID_KEY, USER_ID); }
+
+    /** Each ticket: {id, userId, symptoms, lang, logoDataUrl?, createdAt, diagnosis?, diagnosedAt?} */
+    const TICKETS_KEY = 'drphone_tickets_v1';
+    const getTickets = ()=> store.get(TICKETS_KEY, []);
+    const putTickets = (arr)=> store.set(TICKETS_KEY, arr);
+
+    // --- User Flow ---
+    const symptomsEl = $('#symptoms');
+    const logoEl = $('#logo');
+    const sendBtn = $('#sendBtn');
+    const clearBtn = $('#clearBtn');
+    const ticketArea = $('#ticketArea');
+
+    clearBtn.addEventListener('click', ()=>{ symptomsEl.value=''; logoEl.value=''; ticketArea.style.display='none'; })
+
+    async function handleSend(){
+      const text = (symptomsEl.value || '').trim();
+      if(!text){ fallbackToast('Please write your symptoms • من فضلك اكتب الأعراض'); symptomsEl.focus(); return; }
+
+      let logoDataUrl = null;
+      const file = logoEl.files && logoEl.files[0];
+      if(file){
+        if(file.size > 2*1024*1024){ fallbackToast('Image too large (max 2MB)'); return; }
+        logoDataUrl = await fileToDataURL(file);
+      }
+
+      const ticket = {
+        id: uuid(), userId: USER_ID, symptoms: text, lang: AR_RE.test(text)? 'ar':'en', logoDataUrl,
+        createdAt: nowISO(), diagnosis: null, diagnosedAt: null
+      };
+      const all = getTickets();
+      all.unshift(ticket); // newest first
+      putTickets(all);
+
+      renderUserTicket(ticket);
+      symptomsEl.value=''; logoEl.value='';
+
+      const ok = await ensureNotifyPermission();
+      if(ok){ notify('DRPHONE: We received your symptoms', 'We will notify you when a suggestion is ready.'); }
+      else { fallbackToast('Submitted. Keep this page open to be notified.'); }
+    }
+    sendBtn.addEventListener('click', handleSend);
+
+    function fileToDataURL(file){ return new Promise((res,rej)=>{ const fr=new FileReader(); fr.onload=()=>res(fr.result); fr.onerror=rej; fr.readAsDataURL(file); }); }
+
+    function renderUserTicket(ticket){
+      ticketArea.style.display='grid';
+      ticketArea.innerHTML = `
+        <div class="step">
+          <div class="bullet"></div>
+          <div>
+            <div class="head">Ticket Created • تم إنشاء الطلب</div>
+            <div class="muted">ID: <code>${ticket.id}</code> • ${fmt(ticket.createdAt)}</div>
+            <div style="margin-top:6px">${escapeHtml(ticket.symptoms)}</div>
+            ${ticket.logoDataUrl? `<div style="margin-top:8px"><img src="${ticket.logoDataUrl}" alt="attached" style="max-width:120px; border-radius:8px; border:1px solid var(--ring)"></div>`: ''}
+          </div>
+        </div>
+        ${ticket.diagnosis ? `
+          <div class="step">
+            <div class="bullet" style="background:var(--good)"></div>
+            <div>
+              <div class="head">Suggestion Ready • تم التقييم</div>
+              <div class="muted">${fmt(ticket.diagnosedAt)}</div>
+              <div style="margin-top:6px"><strong>Most likely:</strong> ${escapeHtml(ticket.diagnosis)}</div>
+            </div>
+          </div>
+        `: `
+          <div class="step">
+            <div class="bullet" style="background:#bbb"></div>
+            <div>
+              <div class="head">Pending review • قيد المراجعة</div>
+              <div class="muted">You will get a notification once ready. سيتم إشعارك فور الجاهزية.</div>
+            </div>
+          </div>
+        `}
+      `;
+    }
+
+    function tryShowLatestForUser(){
+      const t = getTickets().find(x=>x.userId===USER_ID);
+      if(t){
+        renderUserTicket(t);
+        if(t.diagnosis && !store.get('drphone_seen_'+t.id)){
+          notify('DRPHONE: Your result is ready', t.diagnosis);
+          store.set('drphone_seen_'+t.id, true);
+        }
+      }
+    }
+
+    // Watch for changes across tabs
+    window.addEventListener('storage', (e)=>{
+      if(e.key===TICKETS_KEY){ tryShowLatestForUser(); renderQueue(); }
+    });
+
+    tryShowLatestForUser();
+
+    // --- Developer Console ---
+    const devBtn = $('#devBtn');
+    const devCard = $('#devCard');
+    const devStatus = $('#devStatus');
+    const lockBtn = $('#lockBtn');
+    const queueEl = $('#queue');
+
+    let DEV_UNLOCKED = false;
+
+    function toggleDev(show){ devCard.hidden = !show; }
+
+    devBtn.addEventListener('click', ()=>{ toggleDev(!devCard.hidden); });
+
+    lockBtn.addEventListener('click', async ()=>{
+      if(DEV_UNLOCKED){ DEV_UNLOCKED=false; updateDevLock(); return; }
+      const pin = prompt('Enter developer PIN / ادخل كود المطوّر (default: 1234)');
+      if(pin===null) return;
+      if(pin.trim()===(store.get('drphone_dev_pin','1234'))){ DEV_UNLOCKED=true; updateDevLock(); renderQueue(); }
+      else { fallbackToast('Wrong PIN • كود غير صحيح'); }
+    });
+
+    function updateDevLock(){ devStatus.textContent = DEV_UNLOCKED ? 'Unlocked' : 'Locked'; lockBtn.textContent = DEV_UNLOCKED? '🔒 Lock' : '🔓 Unlock'; queueEl.innerHTML = DEV_UNLOCKED? '' : '<div class="muted">Unlock to view tickets • افتح القفل لعرض الطلبات</div>'; }
+    updateDevLock();
+
+    function renderQueue(){
+      if(!DEV_UNLOCKED){ return; }
+      const all = getTickets();
+      if(!all.length){ queueEl.innerHTML = '<div class="muted">No tickets yet • لا يوجد طلبات</div>'; return; }
+      queueEl.innerHTML = '';
+      all.forEach(t=>{
+        const item = document.createElement('div');
+        item.className='item';
+        const rtl = t.lang==='ar' ? 'rtl' : '';
+        item.innerHTML = `
+          <div class="meta"><span class="tag">ID: ${t.id}</span><span>${fmt(t.createdAt)}</span><span>Lang: ${t.lang.toUpperCase()}</span>${t.userId===USER_ID? '<span class="tag">(This device)</span>':''}</div>
+          <div class="${rtl}" style="margin-top:6px; white-space:pre-wrap">${escapeHtml(t.symptoms)}</div>
+          ${t.logoDataUrl? `<div style="margin-top:8px"><img src="${t.logoDataUrl}" alt="attached" style="max-width:160px; border-radius:8px; border:1px solid var(--ring)"></div>`: ''}
+          <div style="height:10px"></div>
+          <label>Most likely disease • غالبًا يكون:</label>
+          <textarea ${t.diagnosis? 'disabled':''} data-id="${t.id}" placeholder="e.g., Iron-deficiency anemia (استنتاج مبدئي) ...">${t.diagnosis? escapeHtml(t.diagnosis): ''}</textarea><div class="row" style="margin-top:8px">
+        <button class="btn" data-action="send" data-id="${t.id}" ${t.diagnosis? 'disabled':''}>📤 Send to user</button>
+        ${t.diagnosis? `<span class="tag">Sent ${fmt(t.diagnosedAt)}</span>`:''}
+        <button class="btn ghost" data-action="del" data-id="${t.id}">🗑️ Delete</button>
+      </div>
+    `;
+    queueEl.appendChild(item);
+  });
+}
+
+queueEl.addEventListener('click', (e)=>{
+  const btn = e.target.closest('button'); if(!btn) return;
+  const id = btn.getAttribute('data-id');
+  const action = btn.getAttribute('data-action');
+  let all = getTickets();
+  const idx = all.findIndex(x=>x.id===id); if(idx<0) return;
+  const t = all[idx];
+
+  if(action==='send'){
+    const ta = queueEl.querySelector(`textarea[data-id="${id}"]`);
+    const text = (ta.value||'').trim();
+    if(!text){ fallbackToast('Write a suggestion first • اكتب التشخيص أولاً'); ta.focus(); return; }
+    t.diagnosis = text; t.diagnosedAt = nowISO();
+    all[idx] = t; putTickets(all);
+    renderQueue();
+    notify('DRPHONE • User notified', `Ticket ${id.slice(0,6)}… sent`);
+  }
+  if(action==='del'){
+    if(confirm('Delete this ticket?')){ all.splice(idx,1); putTickets(all); renderQueue(); tryShowLatestForUser(); }
+  }
+});
+
+// Initial permission hint (non-blocking)
+setTimeout(()=>{
+  if(Notification && Notification.permission!=='granted'){
+    fallbackToast('Tip: allow notifications to get real-time updates.');
+  }
+}, 1400);
+
+// Simple sanitizer for rendering user text
+function escapeHtml(s){ return s
+  .replaceAll('&','&amp;')
+  .replaceAll('<','&lt;')
+  .replaceAll('>','&gt;'); }
+
+  </script>
+</body>
+</html>
